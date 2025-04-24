@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Teacher Dashboard</h1>
+<!-- + Button to trigger modal -->
+<div class="text-end mb-3">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">
+        + Register New Student
+    </button>
+</div>
+
+<!-- Modal for Registering New Student -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="/add" method="POST">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="registerModalLabel">Register New Student</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Student Name</label>
+                        <input type="text" name="newusername" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Student Roll No</label>
+                        <input type="text" name="newuserid" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-dark">Register & Capture Face</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+            <!-- <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">Take Attendance</div>
+                    <div class="card-body text-center">
+                        <p>Open webcam and capture student faces.</p>
+                        <a href="/start" class="btn btn-success btn-lg">Start Attendance</a>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+        <div class="card mt-5">
+            <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                <span>Class Schedule</span>
+                <input type="date" class="form-control w-auto" value="{{ datetoday2 }}">
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Time</th>
+                            <th>Subject</th>
+                            <th>Room</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Math 101</td>
+                            <td>9:00 AM - 10:00 AM</td>
+                            <td>Mathematics</td>
+                            <td>Room A1</td>
+                            <td><a href="/start" class="btn btn-success btn-sm">Start Attendance</a></td>
+                        </tr>
+                        <tr>
+                            <td>Physics 102</td>
+                            <td>11:00 AM - 12:00 PM</td>
+                            <td>Physics</td>
+                            <td>Room B1</td>
+                            <td><a href="/start" class="btn btn-success btn-sm">Start Attendance</a></td>
+                        </tr>
+                        <tr>
+                            <td>Chemistry 103</td>
+                            <td>2:00 PM - 3:00 PM</td>
+                            <td>Chemistry</td>
+                            <td>Room C1</td>
+                            <td><a href="/start" class="btn btn-success btn-sm">Start Attendance</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <div class="card-header bg-info text-white">Today's Attendance Report</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Roll</th>
+                            <th>Status</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(l) %}
+                        <tr>
+                            <td>{{ names[i] }}</td>
+                            <td>{{ rolls[i] }}</td>
+                            <td>{{ times[i] }}</td>
+                            <td>
+                                <form method="POST" action="/update_attendance">
+                                    <input type="hidden" name="roll" value="{{ rolls[i] }}">
+                                    <select name="status" class="form-select d-inline-block w-auto">
+                                        <option value="Present">Present</option>
+                                        <option value="Absent">Absent</option>
+                                        <option value="Late">Late</option>
+                                    </select>
+                                    <button class="btn btn-outline-primary btn-sm">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Class Schedule Section -->
+       
+    </div>
+
+    
+    <!-- Assignment Evaluate -->
+
+    <div class="card mt-5 shadow-sm">
+        <div class="card-body">
+            <h3 class="text-center text-primary mb-4">Upload Handwriting Sample</h3>
+            <form method="POST" action="/upload_sample" enctype="multipart/form-data" class="mx-auto" style="max-width: 500px;">
+                <div class="mb-3">
+                    <input type="text" name="student_id" class="form-control" placeholder="Enter Student ID">
+                </div>
+                <div class="text-center mb-2 text-muted">OR</div>
+                <div class="mb-3">
+                    <input type="text" name="student_name" class="form-control" placeholder="Enter Student Name">
+                </div>
+                <div class="mb-3">
+                    <input type="file" name="sample_file" class="form-control">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Upload Handwriting Sample</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="input-group my-4">
+        <input type="text" class="form-control" placeholder="Search by student name">
+    </div>
+    
+    <!-- Assignments Section -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-clipboard-check text-danger"></i> Assignments</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Upload Date</th>
+                        <th>File</th>
+                        <th>Evaluation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Replace with your templating loop -->
+                    <tr>
+                        <td>sanjay</td>
+                        <td>student1_sample2.png</td>
+                        <td>—</td>
+                        <td>4/23/2025, 11:48:42 PM</td>
+                        <td><a href="#">view</a></td>
+                        <td><span class="badge bg-success">Evaluated</span></td>
+                    </tr>
+                    <tr>
+                        <td>sa</td>
+                        <td>student2_sample2.png</td>
+                        <td>—</td>
+                        <td>4/23/2025, 11:49:04 PM</td>
+                        <td><a href="#">view</a></td>
+                        <td><span class="badge bg-warning text-dark">Evaluate</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Handwriting Samples -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-journal-text text-info"></i> Handwriting Samples</h5>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Student Name</th>
+                        <th>Uploaded At</th>
+                        <th>File</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>67e443d790a207873e4c1ba9</td>
+                        <td>sanjay</td>
+                        <td>4/23/2025, 11:49:16 PM</td>
+                        <td><a href="#">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>6803f8538209e0ede77e5f8c</td>
+                        <td>sa</td>
+                        <td>4/23/2025, 11:49:26 PM</td>
+                        <td><a href="#">View</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    
+</body>
+</html>

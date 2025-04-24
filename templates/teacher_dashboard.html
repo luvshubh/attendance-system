@@ -1,0 +1,16 @@
+<!-- templates/teacher_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>Welcome, Teacher!</h2>
+    <nav>
+        <a href="{{ url_for('register_student') }}">Register Student</a> |
+        <a href="{{ url_for('take_attendance') }}">Take Attendance</a> |
+        <a href="{{ url_for('attendance_report') }}">Attendance Report</a>
+    </nav>
+</body>
+</html>

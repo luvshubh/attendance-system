@@ -1,0 +1,14 @@
+<!-- templates/student_dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head><title>Student Dashboard</title></head>
+<body>
+    <h3>Your Attendance Report</h3>
+    <table border="1">
+        <tr><th>Date</th><th>Status</th></tr>
+        {% for entry in attendance %}
+        <tr><td>{{ entry.date }}</td><td>{{ entry.status }}</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

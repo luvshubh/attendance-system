@@ -1,0 +1,34 @@
+<!-- templates/take_attendance.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Take Attendance</title>
+</head>
+<body>
+    <h3>Take Attendance</h3>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button onclick="capture()">Capture Attendance</button>
+    <canvas id="canvas" hidden></canvas>
+    <form id="form" method="POST" action="/mark_attendance">
+        <input type="hidden" name="image" id="imageInput">
+    </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const imageInput = document.getElementById('imageInput');
+
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => video.srcObject = stream);
+
+        function capture() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const dataUrl = canvas.toDataURL('image/png');
+            imageInput.value = dataUrl;
+            document.getElementById('form').submit();
+        }
+    </script>
+</body>
+</html>

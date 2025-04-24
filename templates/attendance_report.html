@@ -1,0 +1,29 @@
+<!-- templates/attendance_report.html -->
+<!DOCTYPE html>
+<html>
+<head><title>Attendance Report</title></head>
+<body>
+    <h3>Attendance Report</h3>
+    <table border="1">
+        <tr><th>Name</th><th>Date</th><th>Status</th><th>Edit</th></tr>
+        {% for record in attendance %}
+        <tr>
+            <td>{{ record.name }}</td>
+            <td>{{ record.date }}</td>
+            <td>{{ record.status }}</td>
+            <td>
+                <form action="/update_attendance" method="POST">
+                    <input type="hidden" name="id" value="{{ record.id }}">
+                    <select name="status">
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                        <option value="Late">Late</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
