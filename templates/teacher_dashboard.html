@@ -12,5 +12,42 @@
         <a href="{{ url_for('take_attendance') }}">Take Attendance</a> |
         <a href="{{ url_for('attendance_report') }}">Attendance Report</a>
     </nav>
+
+    <div class="attendance-status">
+        {% if attendance_status.running %}
+            <div class="alert alert-info">
+                {{ attendance_status.message }}
+            </div>
+        {% elif attendance_status.completed %}
+            <div class="alert alert-success">
+                {{ attendance_status.message }}
+            </div>
+        {% endif %}
+    </div>
+    
+    <script>
+    // Optional: Add JavaScript to auto-refresh the status
+    function checkAttendanceStatus() {
+        fetch('/check_attendance_status')
+            .then(response => response.json())
+            .then(data => {
+                if (data.running || data.completed) {
+                    // Update the status display
+                    document.querySelector('.attendance-status').innerHTML = `
+                        <div class="alert ${data.running ? 'alert-info' : 'alert-success'}">
+                            ${data.message}
+                        </div>
+                    `;
+                    
+                    // If completed, refresh the attendance list
+                    if (data.completed) {
+                        setTimeout(() => location.reload(), 2000);
+                    }
+                }
+            });
+    }
+    
+   
+    </script>
 </body>
 </html>
